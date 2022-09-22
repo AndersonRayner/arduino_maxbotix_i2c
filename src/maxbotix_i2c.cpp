@@ -24,7 +24,7 @@ void MAXBOTIX_I2C::trigger()
     i2c_bus_.write(cmd_range_);
     i2c_bus_.endTransmission();
 
-    t_last_ = millis();
+    t_lastTrigger_ = millis();
 
     // All done
     return;

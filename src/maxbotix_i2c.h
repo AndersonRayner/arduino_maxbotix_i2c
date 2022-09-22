@@ -7,6 +7,7 @@
 
 class MAXBOTIX_I2C {
     public :
+    
         MAXBOTIX_I2C(TwoWire& i2c_bus);
 
         // === Functions
@@ -14,7 +15,8 @@ class MAXBOTIX_I2C {
         void trigger();
         bool read(float* range);
 		
-		uint32_t t_last() { return (t_last_); }
+		uint32_t lastTrigger() { return (t_lastTrigger_); }
+        uint32_t tWait() { return (t_betweenCaptures_); }
 
         // === Debugging
         uint8_t _debug = 0;
@@ -28,8 +30,8 @@ class MAXBOTIX_I2C {
         const int cmd_range_ = 0x51;
 
         // Other
-        uint32_t t_update_ = 0;     // Time last capture was commanded [ ms ]
-        uint32_t t_capture_ = 100;  // Time between captures [ ms ]
+        uint32_t t_lastTrigger_ = 0;     // Time last capture was commanded [ ms ]
+        uint32_t t_betweenCaptures_ = 100;  // Time between captures [ ms ]
         float range_ = 0.0f;        // Last read range [ m ]
         int errors_ = 0;            // Number of errors
 
