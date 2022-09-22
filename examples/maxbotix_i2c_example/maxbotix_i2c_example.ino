@@ -3,7 +3,7 @@
 
 #include <maxbotix_i2c.h>
 
-MAXBOTIX_I2C rangefinder(Wire1);
+MAXBOTIX_I2C rangefinder(Wire);
 
 
 void setup()
