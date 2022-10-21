@@ -24,10 +24,13 @@ class MAXBOTIX_I2C {
     private:
         TwoWire& i2c_bus_;
 
-        const int addr_ = 0x70;     // 7-bit address
-
         // Commands
+        const int addr_ = 0x70;     // 7-bit address
         const int cmd_range_ = 0x51;
+
+        // Constants
+        const float range_min_ = 0.21;  // Minimum measurable range in [ m ]
+        const float range_max_ = 7.00;  // Maximum measurable range in [ m ]  
 
         // Other
         uint32_t t_lastTrigger_ = 0;     // Time last capture was commanded [ ms ]

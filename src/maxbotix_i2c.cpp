@@ -52,6 +52,14 @@ bool MAXBOTIX_I2C::read(float* range)
         // Value successfully read
         errors_ = 0;
 
+        // Check if the range is out of range
+        // Values from datasheet
+        if ((val < range_min_) ||
+            (val > range_max_) )
+        {
+            return (0);
+        }
+
         return (1);
     }
 
