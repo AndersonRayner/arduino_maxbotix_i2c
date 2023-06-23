@@ -30,7 +30,7 @@ class MAXBOTIX_I2C {
 
         // Constants
         const float range_min_ = 0.21;  // Minimum measurable range in [ m ]
-        const float range_max_ = 7.00;  // Maximum measurable range in [ m ]  
+        const float range_max_ = 6.50;  // Maximum measurable range in [ m ]  
 
         // Other
         uint32_t t_lastTrigger_ = 0;     // Time last capture was commanded [ ms ]
