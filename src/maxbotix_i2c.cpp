@@ -68,7 +68,7 @@ bool MAXBOTIX_I2C::read(float* range)
 
     if (errors_ > 10)
     {
-        Serial.print("Resetting the I2C bus");
+        Serial.print("(Maxbotix) Resetting the I2C bus");
         init();
     }
 
@@ -76,4 +76,3 @@ bool MAXBOTIX_I2C::read(float* range)
     return (0);
 
 }
-
