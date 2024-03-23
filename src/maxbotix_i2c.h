@@ -10,12 +10,24 @@ class MAXBOTIX_I2C {
     
         MAXBOTIX_I2C(TwoWire& i2c_bus);
 
+        // === Enums
+        enum RESPONSE
+        { 
+            UNKNOWN,
+            NO_RESPONSE,
+            CRC_FAIL,
+            TOO_FAST,
+            TOO_CLOSE,
+            TOO_FAR,
+            SUCCESS
+        };
+
         // === Functions
         void init();
         void trigger();
-        bool read(float* range);
-		
-		uint32_t lastTrigger() { return (t_lastTrigger_); }
+        RESPONSE read(float* range);
+
+        uint32_t lastTrigger() { return (t_lastTrigger_); }
         uint32_t tWait() { return (t_betweenCaptures_); }
 
         // === Debugging
@@ -29,12 +41,13 @@ class MAXBOTIX_I2C {
         const int cmd_range_ = 0x51;
 
         // Constants
-        const float range_min_ = 0.31;  // Minimum measurable range in [ m ]
+        const float range_min_ = 0.21;  // Minimum measurable range in [ m ]
         const float range_max_ = 6.50;  // Maximum measurable range in [ m ]  
 
         // Other
         uint32_t t_lastTrigger_ = 0;     // Time last capture was commanded [ ms ]
-        uint32_t t_betweenCaptures_ = 100;  // Time between captures [ ms ]
+        uint32_t t_betweenCaptures_ = 1000/15;  // Time between captures [ ms ]
+        bool last_trigger_success_ = false; // True if last trigger was successful (not too fast)
         float range_ = 0.0f;        // Last read range [ m ]
         int errors_ = 0;            // Number of errors
 

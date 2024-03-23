@@ -18,21 +18,34 @@ void MAXBOTIX_I2C::init()
 void MAXBOTIX_I2C::trigger()
 {
     // Send the trigger command
-	// Should be called no faster than 10 Hz
-	
+    // Should be called no faster than 10 Hz
+
+    if (millis()-t_lastTrigger_ < t_betweenCaptures_)
+    {
+        last_trigger_success_ = false;
+        return;
+    }
+
+    // Send the ranging command
     i2c_bus_.beginTransmission(addr_);
     i2c_bus_.write(cmd_range_);
     i2c_bus_.endTransmission();
 
     t_lastTrigger_ = millis();
+    last_trigger_success_ = true;
 
     // All done
     return;
 }
 
-bool MAXBOTIX_I2C::read(float* range)
+MAXBOTIX_I2C::RESPONSE MAXBOTIX_I2C::read(float* range)
 {
     // Reads the latest distance reading and returns if successful
+
+    if (last_trigger_success_ == false)
+    {
+        return (RESPONSE::TOO_FAST);
+    }
 
     const int n_bytes = 2;
 
@@ -54,13 +67,10 @@ bool MAXBOTIX_I2C::read(float* range)
 
         // Check if the range is out of range
         // Values from datasheet
-        if ((val < range_min_) ||
-            (val > range_max_) )
-        {
-            return (0);
-        }
+        if (val < range_min_) return (RESPONSE::TOO_CLOSE);
+        if (val > range_max_) return (RESPONSE::TOO_FAR);
 
-        return (1);
+        return (RESPONSE::SUCCESS);
     }
 
     // Reset the bus if it has errored out
@@ -73,6 +83,6 @@ bool MAXBOTIX_I2C::read(float* range)
     }
 
     // No data was available, return 0
-    return (0);
+    return (RESPONSE::NO_RESPONSE);
 
 }
